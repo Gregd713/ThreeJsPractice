@@ -71,10 +71,16 @@ renderer.render(scene, camera);
 
 const PlaneGeometry = new THREE.PlaneGeometry(10,10, 10,10)
 const PlaneMaterial = new THREE.MeshPhongMaterial({
-  color: 0xff0000, flatShading:THREE.FlatShading
+ flatShading:THREE.FlatShading,
+  vertexColors:true,
 })
 const PlaneMesh = new THREE.Mesh(PlaneGeometry,PlaneMaterial)
 console.log(PlaneMesh.geometry.attributes.position.array)
+
+const colors = []
+for (let i=0;i<PlaneMesh.geometry.attributes.position.count;i++){
+    colors.push(0,1,0)
+}
 
 const {array}=PlaneMesh.geometry.attributes.position
 for (let i = 0;i< array.length;i +=3){
@@ -84,6 +90,7 @@ for (let i = 0;i< array.length;i +=3){
   array[i + 2] = z + Math.random()
 }
 
+PlaneMesh.geometry.setAttribute('color',new THREE.BufferAttribute(new Float32Array(colors),3))
 // // scene.add(torus)
 // scene.add(box)
 scene.add(PlaneMesh)
