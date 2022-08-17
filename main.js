@@ -49,6 +49,8 @@ for (let i = 0;i< array.length;i +=3){
 const scene = new THREE.Scene();
 // scene.background = new THREE.Color( 0xbfe3dd );
 
+const raycaster = new THREE.Raycaster()
+console.log(raycaster)
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
  
 const renderer= new THREE.WebGLRenderer({
@@ -98,6 +100,11 @@ const backLight = new THREE.DirectionalLight(
 backLight.position.set(0,0,-1)
 scene.add(backLight)
 
+const mouse= {
+  x:undefined,
+  y: undefined
+}
+
 function animate(){
   requestAnimationFrame(animate);
   renderer.render(scene,camera);
@@ -105,6 +112,12 @@ function animate(){
   // box.rotation.y += .01
   // PlaneMesh.rotation.x += -.01
   // PlaneMesh.rotation.y += -.01
+  raycaster.setFromCamera(mouse,camera)
+  const intersects = raycaster.intersectObject(PlaneMesh)
+  console.log(intersects);
+  if (intersects.length>0){
+    console.log('intersecting')
+  }
 }
 
 animate()
@@ -115,10 +128,7 @@ controls.update();
 controls.enablePan = false;
 controls.enableDamping = true;
 
-const mouse= {
-  x:undefined,
-  y: undefined
-}
+
 
 addEventListener('mousemove',(event)=>{
 
